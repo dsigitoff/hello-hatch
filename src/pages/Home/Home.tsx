@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Box, Input } from "@material-ui/core";
 import { Column, Table } from "react-virtualized";
 import "react-virtualized/styles.css";
@@ -6,18 +6,26 @@ import "react-virtualized/styles.css";
 import citiesData from "assets/nl.json";
 
 import "./Home.css";
+import { TCities } from "../../types";
 
-const Home = () => {
-  const [cities, setCities] = useState(citiesData);
+const Home = (): JSX.Element => {
+  const [cities, setCities] = useState<TCities[]>(citiesData);
+  const [searchString, setSearchString] = useState<string>("");
 
   const handleOnSearch = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      setCities(
-        citiesData.filter((el) => el["city"].includes(event?.target.value))
-      );
+      event.target && setSearchString(event.target.value);
     },
-    [cities]
+    [searchString]
   );
+
+  useEffect(() => {
+    setCities(
+      citiesData.filter(({ city }) =>
+        city.toLowerCase().includes(searchString.toLowerCase())
+      )
+    );
+  }, [searchString]);
 
   return (
     <Box className="Home" display="flex">
@@ -34,7 +42,7 @@ const Home = () => {
         rowCount={cities.length}
         rowGetter={({ index }) => cities[index]}
       >
-        <Column label="City" dataKey="city" width={200} />
+        <Column label="City" dataKey="city" width={300} />
         <Column label="Population" dataKey="population" width={200} />
         <Column label="Province" dataKey="admin_name" width={200} />
       </Table>
