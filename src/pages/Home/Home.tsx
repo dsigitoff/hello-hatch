@@ -1,6 +1,9 @@
 import React from "react";
-import { Box, Container, Input } from "@material-ui/core";
-import { Grid } from "react-virtualized";
+import { Box, Input } from "@material-ui/core";
+import { Column, Table } from "react-virtualized";
+import "react-virtualized/styles.css";
+
+import cities from "assets/nl.json";
 
 import "./Home.css";
 
@@ -8,17 +11,18 @@ const Home = () => {
   return (
     <Box className="Home" display="flex">
       <Input className="HomeInput" placeholder="Enter city..." />
-      <Container>
-        <Grid
-          cellRenderer={() => null}
-          columnCount={5}
-          columnWidth={25}
-          height={50}
-          width={500}
-          rowCount={5}
-          rowHeight={20}
-        />
-      </Container>
+      <Table
+        width={500}
+        height={800}
+        headerHeight={50}
+        rowHeight={50}
+        rowCount={cities.length}
+        rowGetter={({ index }) => cities[index]}
+      >
+        <Column label="City" dataKey="city" width={200} />
+        <Column label="Population" dataKey="population" width={200} />
+        <Column label="Province" dataKey="admin_name" width={200} />
+      </Table>
     </Box>
   );
 };
