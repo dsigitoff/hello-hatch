@@ -4,9 +4,9 @@ import { Column, Table } from "react-virtualized";
 import "react-virtualized/styles.css";
 
 import citiesData from "assets/nl.json";
+import { TCities } from "types";
 
 import "./Home.css";
-import { TCities } from "../../types";
 
 const Home = (): JSX.Element => {
   const [cities, setCities] = useState<TCities[]>(citiesData);
@@ -31,12 +31,12 @@ const Home = (): JSX.Element => {
     <Box className="Home" display="flex">
       <Input
         className="HomeInput"
-        placeholder="Enter city..."
+        placeholder="Enter the city..."
         onChange={handleOnSearch}
       />
       <Table
         width={500}
-        height={800}
+        height={600}
         headerHeight={50}
         rowHeight={50}
         rowCount={cities.length}
