@@ -1,8 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Box, Input } from "@material-ui/core";
-import { Column, Table } from "react-virtualized";
-import "react-virtualized/styles.css";
 
+import Table from "components/Table/Table";
 import citiesData from "assets/nl.json";
 import { TCities } from "types";
 
@@ -28,24 +27,13 @@ const Home = (): JSX.Element => {
   }, [searchString]);
 
   return (
-    <Box className="Home" display="flex">
+    <Box className="Home" display="flex" alignItems="center">
       <Input
         className="HomeInput"
         placeholder="Enter the city..."
         onChange={handleOnSearch}
       />
-      <Table
-        width={500}
-        height={600}
-        headerHeight={50}
-        rowHeight={50}
-        rowCount={cities.length}
-        rowGetter={({ index }) => cities[index]}
-      >
-        <Column label="City" dataKey="city" width={300} />
-        <Column label="Population" dataKey="population" width={200} />
-        <Column label="Province" dataKey="admin_name" width={200} />
-      </Table>
+      <Table data={cities} itemCount={cities.length} />
     </Box>
   );
 };
