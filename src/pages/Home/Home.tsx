@@ -1,19 +1,15 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Box, Input } from "@material-ui/core";
+import { Column, Table } from "react-virtualized";
 import "react-virtualized/styles.css";
 
-import { TCities } from "types";
 import citiesData from "assets/nl.json";
-import SearchableTable from "components/SearchableTable";
+import { TCities } from "types";
 
 import "./Home.css";
 
-const citiesWithIndex = citiesData
-  .map((el, index) => [{ ...el, index }])
-  .flat();
-
 const Home = (): JSX.Element => {
-  const [cities, setCities] = useState<TCities[]>(citiesWithIndex);
+  const [cities, setCities] = useState<TCities[]>(citiesData);
   const [searchString, setSearchString] = useState<string>("");
 
   const handleOnSearch = useCallback(
@@ -25,7 +21,7 @@ const Home = (): JSX.Element => {
 
   useEffect(() => {
     setCities(
-      citiesWithIndex.filter(({ city }) =>
+      citiesData.filter(({ city }) =>
         city.toLowerCase().includes(searchString.toLowerCase())
       )
     );
@@ -38,7 +34,18 @@ const Home = (): JSX.Element => {
         placeholder="Enter the city..."
         onChange={handleOnSearch}
       />
-      <SearchableTable data={cities} amountRows={cities.length} />
+      <Table
+        width={500}
+        height={600}
+        headerHeight={50}
+        rowHeight={50}
+        rowCount={cities.length}
+        rowGetter={({ index }) => cities[index]}
+      >
+        <Column label="City" dataKey="city" width={300} />
+        <Column label="Population" dataKey="population" width={200} />
+        <Column label="Province" dataKey="admin_name" width={200} />
+      </Table>
     </Box>
   );
 };
