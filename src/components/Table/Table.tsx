@@ -5,22 +5,30 @@ import { TCities } from "types";
 
 import "./Table.css";
 
+enum EColumns {
+  City = "city",
+  Population = "population",
+  Admin_name = "admin_name",
+}
+
 interface TTableProps {
   itemCount: number;
   data: TCities[];
 }
 
-const mock = ["city", "population", "admin_name"];
+const mock = Object.values(EColumns);
 
 const Table = ({ itemCount, data }: TTableProps): JSX.Element => {
   const Row = ({ index, style }: ListChildComponentProps): JSX.Element => (
     <div style={style} className="TableRow">
-      {mock.map((el) => (
-        <div key={el} className="TableRowItem">
-          {/*@ts-ignore*/}
-          {data[index][el]}
-        </div>
-      ))}
+      {mock.map(
+        (el: string, id: number): JSX.Element => (
+          <div key={el + id} className="TableRowItem">
+            {/*@ts-ignore*/}
+            {data[index][el]}
+          </div>
+        )
+      )}
     </div>
   );
   const Column = ({ index, style }: ListChildComponentProps): JSX.Element => (
